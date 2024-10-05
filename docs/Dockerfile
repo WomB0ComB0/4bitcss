@@ -18,4 +18,3 @@ COPY --from=powershell /opt /opt
 SHELL ["/bin/pwsh", "-nologo", "-command"]
 
 ENTRYPOINT [ "/bin/pwsh", "-noexit" ]
-
