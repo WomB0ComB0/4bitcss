@@ -194,4 +194,3 @@ $transpiledText
 "@ |
     Set-Content (Join-Path $docsPath "index.md") -Encoding utf8
 Get-item -Path (Join-Path $docsPath "index.md")
-#endregion Icons 
