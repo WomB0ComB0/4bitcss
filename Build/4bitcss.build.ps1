@@ -251,8 +251,3 @@ $transpiledText
 "@ |
     Set-Content (Join-Path $docsPath "index.md") -Encoding utf8
 Get-item -Path (Join-Path $docsPath "index.md")
-#endregion Icons 
-
-if  ($env:GITHUB_WORKSPACE) {
-    Remove-Item -Path iTerm2-Color-Schemes -Recurse -Force
-}

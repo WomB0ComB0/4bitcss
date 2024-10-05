@@ -1,44 +1,126 @@
 <div class="flexRow centered centeredText wholeWidth">
-    <select id="schemeSelector" onchange="SetColorScheme(document.getElementById('schemeSelector').value); ">
-    </select>
+  <div class="color-scheme-selector">
+    <div class="scheme-list" id="schemeSelector">
+      <!-- Cards will be populated here by JavaScript -->
+    </div>
   </div>
-  <script type="text/javascript">
-    var schemeSelector = document.getElementById("schemeSelector");
-    var colorSchemes = GetColorSchemeList();
-    for (colorScheme in colorSchemes) {
-      var opt = document.createElement("option")
-      opt.value = colorSchemes[colorScheme];
-      opt.innerHTML = colorSchemes[colorScheme];
-      schemeSelector.append(opt);
-    }
-  </script>
-  {% if page.colorSchemeName %}
-  <script type="text/javascript" >
+</div>
 
-    function InitOnDomLoad() {
-        // ensure download links have valid initial values
-        // alternatively, calling random also works:  feelingLucky(document.getElementById('themeSelector'))
-        SetColorScheme("{{page.colorSchemeFileName}}");
-    }
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", InitOnDomLoad)
-    } else {
-        InitOnDomLoad()
-    }
-  </script>
-  {% else %}
-  <script type="text/javascript">
+<style>
+  .color-scheme-selector {
+    width: 300px;
+    background-color: #1e1e1e;
+    border: 1px solid #3a3a3a;
+    border-radius: 4px;
+    padding: 16px;
+    font-family: Arial, sans-serif;
+  }
 
-    function InitOnDomLoad() {
-        // ensure download links have valid initial values
-        // alternatively, calling random also works:  feelingLucky(document.getElementById('themeSelector'))
-        SetColorScheme("Konsolas")
-    }
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", InitOnDomLoad)
-    } else {
-        InitOnDomLoad()
-    }
+  .color-scheme-selector h2 {
+    color: #00ffff;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .scheme-list {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .scheme-card {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    padding: 8px 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .scheme-card:hover {
+    background-color: #3a3a3a;
+  }
+
+  .scheme-card.selected {
+    background-color: #4a4a4a;
+  }
+
+  .scheme-list::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scheme-list::-webkit-scrollbar-track {
+    background: #1e1e1e;
+  }
+
+  .scheme-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .scheme-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+</style>
+
+<script type="text/javascript">
+  var schemeSelector = document.getElementById("schemeSelector");
+  var colorSchemes = GetColorSchemeList();
+  for (colorScheme in colorSchemes) {
+    var card = document.createElement("div");
+    card.className = "scheme-card";
+    card.textContent = colorSchemes[colorScheme];
+    card.setAttribute("data-value", colorSchemes[colorScheme]);
+    card.onclick = function() {
+      SetColorScheme(this.getAttribute("data-value"));
+      var cards = document.getElementsByClassName("scheme-card");
+      for (var i = 0; i < cards.length; i++) {
+        cards[i].classList.remove("selected");
+      }
+      this.classList.add("selected");
+    };
+    schemeSelector.appendChild(card);
+  }
 </script>
-  {% endif %}
 
+{% if page.colorSchemeName %}
+<script type="text/javascript">
+  function InitOnDomLoad() {
+    // ensure download links have valid initial values
+    // alternatively, calling random also works:  feelingLucky(document.getElementById('schemeSelector'))
+    SetColorScheme("{{page.colorSchemeFileName}}");
+    selectCard("{{page.colorSchemeFileName}}");
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", InitOnDomLoad)
+  } else {
+    InitOnDomLoad()
+  }
+</script>
+{% else %}
+<script type="text/javascript">
+  function InitOnDomLoad() {
+    // ensure download links have valid initial values
+    // alternatively, calling random also works:  feelingLucky(document.getElementById('schemeSelector'))
+    SetColorScheme("Konsolas");
+    selectCard("Konsolas");
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", InitOnDomLoad)
+  } else {
+    InitOnDomLoad()
+  }
+</script>
+{% endif %}
+
+<script type="text/javascript">
+  function selectCard(schemeName) {
+    var cards = document.getElementsByClassName("scheme-card");
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].getAttribute("data-value") === schemeName) {
+        cards[i].classList.add("selected");
+        cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        break;
+      }
+    }
+  }
+</script>
