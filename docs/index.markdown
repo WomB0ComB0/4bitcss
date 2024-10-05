@@ -30,5 +30,3 @@ description: 4bit css
 {% include shuffle-icon.svg %}
     </a>    
 </div>
-
-{% include ColorTable.md %}

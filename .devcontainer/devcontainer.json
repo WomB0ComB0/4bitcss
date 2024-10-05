@@ -1,0 +1,5 @@
+{
+  "name": "4bitcss",
+  "dockerFile": "./docs/Dockerfile",
+  "forwardPorts": [80,4040]
+}
